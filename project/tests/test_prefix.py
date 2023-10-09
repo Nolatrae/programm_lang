@@ -1,16 +1,15 @@
 import pytest
 from prefix.prefix import is_operator, is_operand, precedence, prefix_to_infix
-import prefix as pr
 
 
 def test_is_operator():
-    assert pr.is_operator("+") == True
-    assert pr.is_operator("-") == True
-    assert pr.is_operator("*") == True
-    assert pr.is_operator("/") == True
-    assert pr.is_operator("5") == False
-    assert pr.is_operator("a") == False
-    assert pr.is_operator(" ") == False
+    assert is_operator("+") == True
+    assert is_operator("-") == True
+    assert is_operator("*") == True
+    assert is_operator("/") == True
+    assert is_operator("5") == False
+    assert is_operator("a") == False
+    assert is_operator(" ") == False
 
 
 def test_is_operand():

@@ -36,10 +36,10 @@ def prefix_to_infix(expression):
 
 
 # Ввод префиксного выражения
-prefix_expression = input("Введите префиксное выражение: ")
+# prefix_expression = input("Введите префиксное выражение: ")
 
-try:
-    infix_expression = prefix_to_infix(prefix_expression)
-    print(f"Инфиксная запись: {infix_expression}")
-except ValueError as e:
-    print(f"Ошибка: {e}")
+# try:
+#     infix_expression = prefix_to_infix(prefix_expression)
+#     print(f"Инфиксная запись: {infix_expression}")
+# except ValueError as e:
+#     print(f"Ошибка: {e}")
