@@ -33,11 +33,32 @@ class Lexer():
             self.forward()
         return "".join(result)
 
+    def message(self):
+        result = []
+        while (self._current_char is not None and self._current_char not in [";", ":", " ", "=", "."]):
+            result.append(self._current_char)
+            self.forward()
+        return "".join(result)
+
+    def asing(self):
+        while self._current_char:
+            if self._current_char.isspace():
+                self.skip()
+                continue
+
+            match self._current_char[0]:
+                case "=":
+                    self.forward()
+                    return ":="
+
+            raise SyntaxError("bad token")
+
     def next(self):
         while self._current_char:
             if self._current_char.isspace():
                 self.skip()
                 continue
+
             if self._current_char.isdigit():
                 return Token(TokenType.NUMBER, self.number())
             if self._current_char in ["+", "-", "/", "*"]:
@@ -52,5 +73,24 @@ class Lexer():
                 op = self._current_char
                 self.forward()
                 return Token(TokenType.RPAREN, op)
+            if self._current_char == ";":
+                semi = self._current_char
+                self.forward()
+                return Token(TokenType.SEMI, semi)
+            if self._current_char == ":":
+                self.forward()
+                return Token(TokenType.ASSIGN, self.asing())
+            if self._current_char == ".":
+                dot = self._current_char
+                return Token(TokenType.DOT, dot)
+
+            mes = self.message()
+            match mes:
+                case "BEGIN":
+                    return Token(TokenType.BEGIN, mes)
+                case "END":
+                    return Token(TokenType.END, mes)
+                case _ if mes != "":
+                    return Token(TokenType.ID, mes)
 
             raise SyntaxError("bad token")
