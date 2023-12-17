@@ -65,6 +65,8 @@ class Lexer():
                 op = self._current_char
                 self.forward()
                 return Token(TokenType.OPERATOR, op)
+            if self._current_char == "&":
+                raise SyntaxError("Invalid operator: &")
             if self._current_char == "(":
                 op = self._current_char
                 self.forward()

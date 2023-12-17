@@ -30,6 +30,8 @@ class Interpreter(NodeVisitor):
             return self.visit_semi(node)
         elif isinstance(node, Assigment):
             return self.visit_assigment(node)
+        else:
+            raise SyntaxError("Unsupported node type")
 
 
     def visit_number(self, node):
@@ -62,8 +64,8 @@ class Interpreter(NodeVisitor):
         return self.visit(tree)
 
     def visit_var(self, node):
-        if node.token.value not in list(self.variable.keys()):
-            raise ValueError("Uninitialized variable")
+        if node.token.value not in self.variable:
+            raise SyntaxError("Uninitialized variable")
         return self.variable[node.token.value]
 
     def visit_empty(self):

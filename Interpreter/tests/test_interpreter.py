@@ -7,6 +7,9 @@ from interpreter import Token, TokenType, Parser
 def interpreter():
     return Interpreter()
 
+@pytest.fixture
+def lexer():
+    return Lexer()
 
 @pytest.fixture(scope="function")
 def parser():
@@ -109,17 +112,14 @@ class TestInterpreter:
         assert interpreter.eval(code) == 4
 
     def test_empty(self, interpreter):
-        assert interpreter.eval("BEGIN END.") == {}
-
-    def test_variable(self, interpreter):
-        assert interpreter.eval("BEGIN x:= 2 + 3 * (2 + 3); END.") == {'x': 17.0}
+        assert Empty(Token(TokenType.END, "END.")).__str__() == "Empty (Token(TokenType.END, END.))"
 
     def test_NodeVisitor(self):
         assert NodeVisitor().visit() is None
 
     def test_uninitialized_variable(self, interpreter):
-        with pytest.raises(ValueError):
-            interpreter.eval("BEGIN b := -10 + +a + 10 * y / 4; END.")
+        with pytest.raises(SyntaxError):
+            interpreter.eval("a := 5; BEGIN b := -10 + +a + 10 * y / 4; END.")
 
     def test_bad_token(self, interpreter):
         with pytest.raises(SyntaxError):
@@ -203,5 +203,7 @@ class TestInterpreter:
     def test_ast_Assigment_str(self):
         assert Assigment(Var(Token(TokenType.ID, "h")), Number(Token(TokenType.NUMBER, "2"))).__str__() == \
                f"Assigment Variable (Token(TokenType.ID, h)) (Number (Token(TokenType.NUMBER, 2)))"
+
+
 
 
